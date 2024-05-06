@@ -451,6 +451,7 @@ while true do
     if array.autofarm then
         pcall(function()
         superclick = true
+        wait()
       end)
     end
 end
