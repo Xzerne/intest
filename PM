@@ -1,0 +1,105 @@
+repeat wait() until game:IsLoaded()
+    wait(2)
+    local clans = {
+   "Kurosaki",
+   "Urahara",
+   "Yhwach",
+   "Uryu",
+   "Cifer",
+   "Thoumeausx",
+   "Yamamoto",
+   "Tsukishima",
+"Arruruerie",
+"Aizen",
+"Zaraki",
+"Ginjo",
+"Starrk",
+"Haschwalth",
+"Le Vaar",
+"Joestar",
+"Gojo",
+"Ichibei",
+"Ikomikidomoe"
+}
+    local url = "webhook"
+
+    game:GetService("ReplicatedStorage").Change_Slot:InvokeServer(1) --change slot here, 1 for 1st slot, 2 for 2nd
+
+   
+    function spin()
+        local user = tostring(game.Players.LocalPlayer)
+
+        getgenv().loop = true
+        while getgenv().loop do
+            game:GetService("ReplicatedStorage").Spin:InvokeServer(1)
+            task.wait(0.1)
+            local found = false
+
+            for i=1, #clans do
+                if clans[i]:lower() == game:GetService("ReplicatedStorage")["Player_Datas"][user]["Slot_1"].Clan.Value:lower() then
+                    found = true
+                    break
+                end
+            end
+
+            if found then
+                print("YAYYYYY YOU GOT "..tostring(game:GetService("ReplicatedStorage")["Player_Datas"][user]["Slot_1"].Clan.Value))
+                local data = {
+                    ["content"] = "@everyone YOU ROLLED SOMETHING",
+                    ["username"] = "Jon Jones",
+                    ["avatar_url"] = "https://a.espncdn.com/combiner/i?img=/i/headshots/mma/players/full/2335639.png",
+                    ["embeds"] = {
+                        {
+                            ["description"] = "**Project Mugetsu**\n\n```User: "..user.."\n\nClan: "..game:GetService("ReplicatedStorage")["Player_Datas"][user]["Slot_1"].Clan.Value.."```",
+                            ["type"] = "rich",
+                            ["color"] = tonumber(0x5a3812)
+                        }
+                    }
+                }
+                local newdata = game:GetService("HttpService"):JSONEncode(data)
+                local headers = {
+                    ["content-type"] = "application/json"
+                }
+                request = http_request or request or HttpPost or syn.request
+                local send = {Url = url, Body = newdata, Method = "POST", Headers = headers}
+                request(send)
+                getgenv().loop = false
+            else
+                print("Rolled "..tostring(game:GetService("ReplicatedStorage")["Player_Datas"][user]["Slot_1"].Clan.Value))
+            end
+        end
+    end
+
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+local Window = OrionLib:MakeWindow({Name = "Project Mugetsu", HidePremium = false, SaveConfig = false, IntroText = "NOTHING HUB", ConfigFolder = "PMnothinghub"})
+
+local Tab = Window:MakeTab({
+	Name = "Main",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "Spin"
+})
+
+Tab:AddToggle({
+	Name = "Auto Spin [no common,rare,epic,legendary clans]",
+	Default = false,
+	Callback = function(Value)
+		spin()
+	end    
+})
+
+if found then
+OrionLib:MakeNotification({
+	Name = "Hmm..U got something",
+	Content = "Oh Shit It is : "..tostring(game:GetService("ReplicatedStorage")["Player_Datas"][user]["Slot_1"].Clan.Value)
+	Image = "rbxassetid://4483345998",
+	Time = 5
+})
+end
+OrionLib:Init()
+
+    
