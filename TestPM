@@ -1,0 +1,146 @@
+mobstable = {
+  "Nnoitra",
+  "Gravitas",
+  "Tormenta",
+  "Arrogante",
+  "Vasto Lorde",
+  "Hollows",
+  "MENOS"
+}
+
+local redzlib = loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/RedzLibV5/main/Source.Lua"))()
+
+local Window = redzlib:MakeWindow({
+  Title = "Project Mugetsu",
+  SubTitle = "Hello",
+  SaveFolder = "PM CONFIG"
+})
+
+local Main = Window:MakeTab({"General", "cool"})
+
+Main:AddSection({"Farm"})
+Main:AddDropdown({
+    Name = "Select Mob",
+    Options = mobstable,
+    Default = {""},
+    Callback = function(Value)
+      getgenv().SelectMob = Value
+    end
+  })
+
+Main:AddToggle({Name = "Auto Farm Mob Selected",  Default = false,Callback = function(Value)
+    getgenv().FarmMob = Value
+  end})
+
+spawn(function()
+    while wait() do
+      if getgenv().FarmMob then
+        pcall(function()
+            if workspace.World.Live.Mobs:FindFirstChild(getgenv().SelectMob) then
+              for i,v in pairs(workspace.World.Live.Mobs:GetChildren()) do
+                if v.Name == getgenv().SelectMob then
+                  repeat task.wait()
+                    v.HumanoidRootPart.CanCollide = false
+                                        v.Humanoid.WalkSpeed = 0
+                    v.HumanoidRootPart.Size = Vector3.new(80,80,80)                             PosMon = v.HumanoidRootPart.CFrame
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
+                  until not getgenv().FarmMob or not v.Parent or v.Humanoid.Health <= 0 or not workspace.World.Live.Mobs:FindFirstChild(getgenv().SelectMob)
+                  end
+              end
+            end
+          end)
+      end
+    end
+  end)
+
+Main:AddToggle({Name = "Auto Loot",  Default = false,Callback = function(Value)
+    getgenv().autoloot = Value
+  end})
+
+spawn(function()
+    while wait() do
+      if getgenv().autoloot then
+        pcall(function()
+            for i,v in pairs(workspace.World.Drops:GetDescendant()) do
+              if v:IsA("ProximityPrompt") then
+               repeat wait()
+                  
+                  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Parent.CFrame
+                  fireproximityprompt(v.ProximityPrompt)
+                until not getgenv().autoloot or not v.Parent
+              end
+            end
+          end)
+      end
+    end
+  end)
+                
+Main:AddSection({"Setting"})
+
+                  Main:AddDropdown({
+    Name = "Select Weapon",
+    Options = "Fist", "Sword",
+    Default = {""},
+    Callback = function(Value)
+      getgenv().selectweapon = Value
+    end
+  })
+
+Main:AddToggle({Name = "Kill Aura",  Default = false,Callback = function(Value)
+    getgenv().KillAura = Value
+  end})
+
+spawn(function()
+			while wait() do
+				if getgenv().selectweapon and getgenv().KillAura then
+					if getgenv().selectweapon == "Sword" then
+						local args = {
+    [1] = "Swing",
+    [2] = 1,
+    [3] = "Sword"
+}
+
+game:GetService("ReplicatedStorage").Remotes.Server.Initiate_Server:FireServer(unpack(args))
+					elseif getgenv().selectweapon == "Fist" then
+						local args = {
+    [1] = "Swing",
+    [2] = 1,
+    [3] = "Fist"
+}
+
+game:GetService("ReplicatedStorage").Remotes.Server.Initiate_Server:FireServer(unpack(args))
+					elseif getgenv().selectweapon == "" then
+						print("please choose weapon")
+					end
+				end
+			end
+		end)
+
+methodfarm = {
+  "Upper",
+  "Behind",
+  "Below"
+}
+
+Main:AddDropdown({
+    Name = "Select Method Farm",
+    Options = methodfarm,
+    Default = {"Below"},
+    Callback = function(Value)
+      getgenv().methodfarm = Value
+    end
+  })
+
+spawn(function()
+    while wait() do
+      if getgen().methodfarm == "Upper" then
+        Pos = CFrame.new(0, 5, 0)
+      elseif getgenv().methodfarm == "Behind" then
+        Pos = CFrame.new(0, 0, 2)
+      elseif getgenv().methodfarm == "Below" then
+        Pos = CFrame.new(0, -5, 0)
+      end
+    end
+  end)
+
+
