@@ -47,8 +47,8 @@ local Config = {
     TweenSpeed = 200,
     TweenStyle = Enum.EasingStyle.Sine,
     TweenDirection = Enum.EasingDirection.InOut,
-    NpcDistance = 7,
-    BossDistance = 15,
+    NpcDistance = -1,
+    BossDistance = -3,
     
     -- Combat Settings
     AttackDelay = 0.08,
@@ -815,7 +815,7 @@ SettingsTab:AddSlider({
     Name = "NPC Distance",
     Min = 3,
     Max = 15,
-    Default = 7,
+    Default = 1,
     Color = Color3.fromRGB(255, 0, 0),
     Increment = 1,
     ValueName = "studs",
@@ -828,7 +828,7 @@ SettingsTab:AddSlider({
     Name = "Boss Distance",
     Min = 5,
     Max = 25,
-    Default = 15,
+    Default = 1,
     Color = Color3.fromRGB(255, 0, 0),
     Increment = 1,
     ValueName = "studs",
